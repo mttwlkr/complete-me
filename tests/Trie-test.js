@@ -34,16 +34,23 @@ describe('TRIE', () => {
       expect(trie.wordCount).to.equal(1)
     })
 
+    it('should not increment word count if same word submitted', () => {
+      expect(trie.wordCount).to.equal(0)
+      trie.insert('pizza');
+      expect(trie.wordCount).to.equal(1)
+      trie.insert('pizza');
+      expect(trie.wordCount).to.equal(1)
+    })
+
     it('should create keys in children object of first letter', () => {
       trie.insert('pizza');
       trie.insert('cat');
       trie.insert('piano');
-      // console.log(JSON.stringify(trie, null, 4))
-      expect(Object.keys(trie.children)).to.deep.equal(['p','c'])
-      expect(Object.keys(trie.children.p.children)).to.deep.equal(['i'])
-      expect(Object.keys(trie.children.c.children)).to.deep.equal(['a']) 
-      expect(Object.keys(trie.children.p.children.i.children)).to.deep.equal(['z','a'])
-      expect(Object.keys(trie.children.c.children.a.children)).to.deep.equal(['t'])           
+      expect(Object.keys(trie.children)).to.deep.equal(['p','c']);
+      expect(Object.keys(trie.children.p.children)).to.deep.equal(['i']);
+      expect(Object.keys(trie.children.c.children)).to.deep.equal(['a']);
+      expect(Object.keys(trie.children.p.children.i.children)).to.deep.equal(['z','a']);
+      expect(Object.keys(trie.children.c.children.a.children)).to.deep.equal(['t']);         
     })
 
     it('should be able to take in more than one word starting w/ the same letter', () => {
@@ -78,7 +85,12 @@ describe('TRIE', () => {
       trie.insert('dog');
     })
 
-    it('should return an array of suggested words', () => {
+    it('should not return an empty array if prefix has no child nodes', () => {
+      let results = trie.suggest('e');
+      expect(results).to.deep.equal([])    
+    })
+
+    it('should return an array of suggested words, but not include words not containing the prefix', () => {
       let results = trie.suggest('pi');
       let check1 = results.some(result => result === 'pizza')
       let check2 = results.some(result => result === 'pizzas')
@@ -116,7 +128,6 @@ describe('TRIE', () => {
       trie.suggest('piz');
       expect(trie.suggest('piz')).to.deep.equal(['pizzeria', 'pize', 'pizza', 'pizzicato', 'pizzle'])
     })
-
   })
 
   describe('DELETE', () => {
