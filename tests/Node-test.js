@@ -20,14 +20,3 @@ describe('NODE', () => {
     expect(node.children).to.deep.equal({});
   })
 })
-
-
-// PAT
-
-  // it('should take data and assign it to data', () => {
-  //   expect(node.data).to.equal('pizza')
-
-  //   let newNode = new Node('pineapple');
-
-  //   expect(newNode.data).to.equal('pineapple')
-  // })
